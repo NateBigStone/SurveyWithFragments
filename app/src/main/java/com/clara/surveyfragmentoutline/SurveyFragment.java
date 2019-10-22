@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -20,6 +21,7 @@ public class SurveyFragment extends Fragment {
 
     private int mYesCount = 0;
     private int mNoCount = 0;
+    TextView questionView;
 
     interface SurveyListener {
         void surveyResults(int yes, int no);
@@ -32,7 +34,7 @@ public class SurveyFragment extends Fragment {
     }
 
 
-    public static SurveyFragment newInstance() {
+    public static SurveyFragment newInstance(int yes, int no) {
         return new SurveyFragment();
     }
 
@@ -50,15 +52,17 @@ public class SurveyFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_survey, container, false);
 
+        questionView = view.findViewById(R.id.question_text);
+
         Button yesButton = view.findViewById(R.id.yes_button);
         Button noButton = view.findViewById(R.id.no_button);
-        Button showResults  = view.findViewById(R.id.results_button);
 
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("SURVEY", "Yes " + mYesCount);
                 mYesCount++;
+                listener.surveyResults(mYesCount, mNoCount);
             }
         });
 
@@ -67,18 +71,17 @@ public class SurveyFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("SURVEY", "No " + mNoCount);
                 mNoCount++;
-            }
-        });
-
-        showResults.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 listener.surveyResults(mYesCount, mNoCount);
             }
         });
 
 
         return view;
+    }
+
+    public void newQuestion(String newQuestion) {
+
+        questionView.setText(newQuestion);
     }
 
 }
