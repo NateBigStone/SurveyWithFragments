@@ -4,4 +4,6 @@
     <string name="submit">Submit</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="answer_1">Answer 1</string>
+    <string name="answer_2">Answer 2</string>
 </resources>

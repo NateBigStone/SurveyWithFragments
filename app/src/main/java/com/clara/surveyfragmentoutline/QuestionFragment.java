@@ -18,7 +18,7 @@ public class QuestionFragment extends Fragment {
 
 
     public interface NewQuestionListener {
-        void newQuestionCreated(String newQuestion);
+        void newQuestionCreated(String newQuestion, String mYesAnswer, String mNoAnswer);
     }
 
 
@@ -57,12 +57,16 @@ public class QuestionFragment extends Fragment {
 
         Button addQuestion = view.findViewById(R.id.add_question_button);
         final EditText questionText = view.findViewById(R.id.new_question);
+        final EditText yesText = view.findViewById(R.id.yes_answer);
+        final EditText noText = view.findViewById(R.id.no_answer);
         addQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String newQuestion = questionText.getText().toString();
+                String mYesText = yesText.getText().toString();
+                String mNoText = noText.getText().toString();
 
-                if (newQuestion.isEmpty()) {
+                if (newQuestion.isEmpty() || mYesText.isEmpty() || mNoText.isEmpty()) {
                     Toast.makeText(getActivity(), "Please enter some text", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -70,10 +74,12 @@ public class QuestionFragment extends Fragment {
 
                 //Create a new to do item
                 //TODO: pass the question
-                mNewQuestionListener.newQuestionCreated(newQuestion);
+                mNewQuestionListener.newQuestionCreated(newQuestion, mYesText, mNoText);
                 //Log.d(TAG, "New item is " + newItem);
 
                 questionText.getText().clear();
+                yesText.getText().clear();
+                noText.getText().clear();
             }
         });
 

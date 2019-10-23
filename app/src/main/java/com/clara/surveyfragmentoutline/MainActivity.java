@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "MAIN ACTIVITY";
 
     private String mQuestion = "";
+    private String mNoAnswer = "";
+    private String mYesAnswer = "";
     private int mYesCount = 0;
     private int mNoCount = 0;
 
@@ -40,8 +42,8 @@ public class MainActivity extends AppCompatActivity
 
 
         QuestionFragment questionFragment = QuestionFragment.newInstance();
-        SurveyFragment surveyFragment = SurveyFragment.newInstance(mYesCount,mNoCount);
-        ResultFragment resultFragment = ResultFragment.newInstance(mNoCount, mNoCount);
+        SurveyFragment surveyFragment = SurveyFragment.newInstance(mYesAnswer,mNoAnswer);
+        ResultFragment resultFragment = ResultFragment.newInstance(mNoCount, mNoCount, mYesAnswer,mNoAnswer);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -57,23 +59,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void newQuestionCreated(String newQuestion) {
+    public void newQuestionCreated(String newQuestion, String yesAnswer, String noAnswer) {
 
         Log.d(TAG, "Notified that this new item was created: " + newQuestion);
         mQuestion = newQuestion;
+        mYesAnswer = yesAnswer;
+        mNoAnswer = noAnswer;
 
         FragmentManager fm = getSupportFragmentManager();
         SurveyFragment surveyFragment = (SurveyFragment) fm.findFragmentByTag(TAG_SURVEY_FRAG);
-        surveyFragment.newQuestion(mQuestion);
+        surveyFragment.newQuestion(mQuestion, mYesAnswer, mNoAnswer);
         hideKeyboard();
     }
 
     @Override
-    public void surveyResults(int yes, int no) {
+    public void surveyResults(int yes, int no, String yesAnswer, String noAnswer) {
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ResultFragment resultFragment = ResultFragment.newInstance(yes, no);
-        ft.replace(R.id.results_view_container, resultFragment);
+        ResultFragment newResultFragment = ResultFragment.newInstance(yes, no, yesAnswer, noAnswer);
+        ft.replace(R.id.results_view_container, newResultFragment);
         ft.addToBackStack("RESULT");
         ft.commit();
         // launch ResultActivity
@@ -85,8 +89,8 @@ public class MainActivity extends AppCompatActivity
 
          //Make brand new survey activity, replace result activity.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        SurveyFragment newSurveyFragment = SurveyFragment.newInstance(0,0);
-        ResultFragment newResultFragment = ResultFragment.newInstance(0,0);
+        SurveyFragment newSurveyFragment = SurveyFragment.newInstance("","");
+        ResultFragment newResultFragment = ResultFragment.newInstance(0,0,"","");
         ft.replace(R.id.survey_view_container, newSurveyFragment);
         ft.replace(R.id.results_view_container, newResultFragment);
         ft.commit();

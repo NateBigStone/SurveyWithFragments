@@ -23,19 +23,26 @@ public class ResultFragment extends Fragment {
 
     private static final String ARG_YES_COUNT = "arg_yes";
     private static final String ARG_NO_COUNT = "arg_no";
+    private static final String ARG_YES_ANS = "ans_yes";
+    private static final String ARG_NO_ANS = "ans_no";
 
     private int yesCount;
     private int noCount;
+
+    private String yesAnswer;
+    private String noAnswer;
 
     public ResultFragment() {
         // Required empty public constructor
     }
 
-    public static ResultFragment newInstance(int yes, int no) {
+    public static ResultFragment newInstance(int yes, int no, String yesAnswer, String noAnswer) {
         ResultFragment fragment = new ResultFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_YES_COUNT, yes);
         args.putInt(ARG_NO_COUNT, no);
+        args.putString(ARG_YES_ANS, yesAnswer);
+        args.putString(ARG_NO_ANS, noAnswer);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,6 +54,8 @@ public class ResultFragment extends Fragment {
         if (getArguments() != null) {
             yesCount = getArguments().getInt(ARG_YES_COUNT);
             noCount = getArguments().getInt(ARG_NO_COUNT);
+            yesAnswer = getArguments().getString(ARG_YES_ANS);
+            noAnswer = getArguments().getString(ARG_YES_ANS);
         }
     }
 
@@ -62,10 +71,10 @@ public class ResultFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result, container, false);
         TextView yesView = view.findViewById(R.id.yes_count);
-        yesView.setText("YES: " + yesCount);
+        yesView.setText(yesAnswer + ": " + yesCount);
 
         TextView noView = view.findViewById(R.id.no_count);
-        noView.setText("NO: " + noCount);
+        noView.setText(noAnswer + ": " + noCount);
 
         Button reset = view.findViewById(R.id.reset_button);
         reset.setOnClickListener(new View.OnClickListener() {

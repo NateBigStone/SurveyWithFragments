@@ -21,10 +21,16 @@ public class SurveyFragment extends Fragment {
 
     private int mYesCount = 0;
     private int mNoCount = 0;
+    private String mYesAnswer = "";
+    private String mNoAnswer = "";
+
+    Button yesButton;
+    Button noButton;
+
     TextView questionView;
 
     interface SurveyListener {
-        void surveyResults(int yes, int no);
+        void surveyResults(int yes, int no, String yesAnswer, String noAnswer);
     }
 
     private SurveyListener listener;
@@ -34,7 +40,7 @@ public class SurveyFragment extends Fragment {
     }
 
 
-    public static SurveyFragment newInstance(int yes, int no) {
+    public static SurveyFragment newInstance(String yesAnswer, String noAnswer) {
         return new SurveyFragment();
     }
 
@@ -54,24 +60,26 @@ public class SurveyFragment extends Fragment {
 
         questionView = view.findViewById(R.id.question_text);
 
-        Button yesButton = view.findViewById(R.id.yes_button);
-        Button noButton = view.findViewById(R.id.no_button);
+        yesButton = view.findViewById(R.id.yes_button);
+        yesButton.setText(mYesAnswer);
+        noButton = view.findViewById(R.id.no_button);
+        noButton.setText(mNoAnswer);
 
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SURVEY", "Yes " + mYesCount);
+                Log.d("SURVEY", "Yes " + mYesCount + mYesAnswer);
                 mYesCount++;
-                listener.surveyResults(mYesCount, mNoCount);
+                listener.surveyResults(mYesCount, mNoCount, mYesAnswer, mNoAnswer);
             }
         });
 
         noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("SURVEY", "No " + mNoCount);
+                Log.d("SURVEY", "No " + mNoCount + mNoAnswer);
                 mNoCount++;
-                listener.surveyResults(mYesCount, mNoCount);
+                listener.surveyResults(mYesCount, mNoCount, mYesAnswer, mNoAnswer);
             }
         });
 
@@ -79,9 +87,13 @@ public class SurveyFragment extends Fragment {
         return view;
     }
 
-    public void newQuestion(String newQuestion) {
+    public void newQuestion(String newQuestion, String yesAnswer, String noAnswer) {
 
         questionView.setText(newQuestion);
+        mYesAnswer = yesAnswer;
+        yesButton.setText(mYesAnswer);
+        mNoAnswer = noAnswer;
+        noButton.setText(mNoAnswer);
     }
 
 }
