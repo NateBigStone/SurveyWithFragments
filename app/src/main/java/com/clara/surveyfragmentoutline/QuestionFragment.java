@@ -62,7 +62,7 @@ public class QuestionFragment extends Fragment {
         addQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String newQuestion = questionText.getText().toString();
+                String newQuestion = questionText.getText().toString() +"?";
                 String mYesText = yesText.getText().toString();
                 String mNoText = noText.getText().toString();
 
@@ -71,11 +71,8 @@ public class QuestionFragment extends Fragment {
                     return;
                 }
 
-
-                //Create a new to do item
-                //TODO: pass the question
+                //Create a new question
                 mNewQuestionListener.newQuestionCreated(newQuestion, mYesText, mNoText);
-                //Log.d(TAG, "New item is " + newItem);
 
                 questionText.getText().clear();
                 yesText.getText().clear();

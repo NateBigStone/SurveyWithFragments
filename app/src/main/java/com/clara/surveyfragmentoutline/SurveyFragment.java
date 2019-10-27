@@ -40,7 +40,7 @@ public class SurveyFragment extends Fragment {
     }
 
 
-    public static SurveyFragment newInstance(String yesAnswer, String noAnswer) {
+    public static SurveyFragment newInstance() {
         return new SurveyFragment();
     }
 

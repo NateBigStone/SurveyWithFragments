@@ -55,7 +55,7 @@ public class ResultFragment extends Fragment {
             yesCount = getArguments().getInt(ARG_YES_COUNT);
             noCount = getArguments().getInt(ARG_NO_COUNT);
             yesAnswer = getArguments().getString(ARG_YES_ANS);
-            noAnswer = getArguments().getString(ARG_YES_ANS);
+            noAnswer = getArguments().getString(ARG_NO_ANS);
         }
     }
 
@@ -68,13 +68,18 @@ public class ResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        String yesButtonString = yesAnswer.length() > 0 ? yesAnswer + ": " + yesCount : "";
+        String noButtonString = noAnswer.length() > 0 ? noAnswer + ": " + noCount : "";
+
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result, container, false);
         TextView yesView = view.findViewById(R.id.yes_count);
-        yesView.setText(yesAnswer + ": " + yesCount);
+        yesView.setText(yesButtonString);
 
         TextView noView = view.findViewById(R.id.no_count);
-        noView.setText(noAnswer + ": " + noCount);
+        noView.setText(noButtonString);
 
         Button reset = view.findViewById(R.id.reset_button);
         reset.setOnClickListener(new View.OnClickListener() {

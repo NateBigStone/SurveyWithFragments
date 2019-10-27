@@ -13,10 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 public class MainActivity extends AppCompatActivity
         implements QuestionFragment.NewQuestionListener, SurveyFragment.SurveyListener, ResultFragment.ResetListener {
 
-
-    private static final String BUNDLE_KEY_YES_VOTES = "YES VOTES";
-    private static final String BUNDLE_KEY_NO_VOTES = "NO VOTES";
-
     private static final String TAG_QUESTION_FRAG = "QUESTION FRAGMENT";
     private static final String TAG_SURVEY_FRAG = "SURVEY FRAGMENT";
     private static final String TAG_RESULT_FRAG = "RESULT FRAGMENT";
@@ -34,16 +30,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        SurveyFragment surveyFragment = SurveyFragment.newInstance();
-//
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        //ft.add(R.id.container, surveyFragment);
-//        ft.commit();
-
-
         QuestionFragment questionFragment = QuestionFragment.newInstance();
-        SurveyFragment surveyFragment = SurveyFragment.newInstance(mYesAnswer,mNoAnswer);
-        ResultFragment resultFragment = ResultFragment.newInstance(mNoCount, mNoCount, mYesAnswer,mNoAnswer);
+        SurveyFragment surveyFragment = SurveyFragment.newInstance();
+        ResultFragment resultFragment = ResultFragment.newInstance(mYesCount, mNoCount, mYesAnswer,mNoAnswer);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -60,6 +49,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void newQuestionCreated(String newQuestion, String yesAnswer, String noAnswer) {
+
+        //This should be done in a better way
 
         Log.d(TAG, "Notified that this new item was created: " + newQuestion);
         mQuestion = newQuestion;
@@ -89,8 +80,10 @@ public class MainActivity extends AppCompatActivity
 
          //Make brand new survey activity, replace result activity.
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        SurveyFragment newSurveyFragment = SurveyFragment.newInstance("","");
+        QuestionFragment newQuestionFragment = QuestionFragment.newInstance();
+        SurveyFragment newSurveyFragment = SurveyFragment.newInstance();
         ResultFragment newResultFragment = ResultFragment.newInstance(0,0,"","");
+        ft.replace(R.id.question_view_container, newQuestionFragment);
         ft.replace(R.id.survey_view_container, newSurveyFragment);
         ft.replace(R.id.results_view_container, newResultFragment);
         ft.commit();
